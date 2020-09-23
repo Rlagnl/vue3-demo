@@ -1,6 +1,11 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <p>store a: {{store.getters.ab}}</p>
+    <button type='button' @click='addA'>a++</button>
+    <button type='button' @click='actionA'>action a</button>
+    <br/>
+    <br/>
     <button type='button' @click='goToNext'>Next</button>
     <HelloWorld msg="First Page" />
     <CounterView />
@@ -10,6 +15,7 @@
 <script>
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import HelloWorld from "./HelloWorld.vue";
 import CounterView from "./CounterView.vue";
 import { provideStore } from '../compositions/store'
@@ -29,15 +35,32 @@ export default {
     const route = useRoute()
     // 获取路由实例
     const router = useRouter()
+
+    const store = useStore()
+    function addA () {
+      store.commit('addA')
+    }
+    function actionA () {
+      store.dispatch('actionA').then(() => {
+        console.log(store.getters.ab)
+      })
+    }
+
     provideStore(data)
-    onMounted(() => {
-      console.warn('home app mounted~', route.query)
-    })
     function goToNext () {
       router.push({ path: '/detail/123' })
     }
+
+    onMounted(() => {
+      console.warn('home app store', store.state)
+      console.warn('home app mounted~', route.query)
+    })
+
     return {
       msg,
+      store,
+      addA,
+      actionA,
       goToNext
     }
   }
