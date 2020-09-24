@@ -2,6 +2,10 @@
   <div class="hello">
     <h1>Detail App</h1>
     <button type='button' @click='goToBack'>Back</button>
+    <!-- to 属性就是目标位置 -->
+    <teleport to="#teleport-target">
+      <div class="toast-wrap"></div>
+    </teleport>
   </div>
 </template>
 
@@ -43,5 +47,10 @@ li {
 }
 a {
   color: #42b983;
+}
+.toast-wrap {
+  height: 100px;
+  width: 100px;
+  background-color: #42b983;
 }
 </style>
